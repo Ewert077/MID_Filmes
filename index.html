@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Orbitron&display=swap" rel="stylesheet">
+
+    <title>Filmes</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+            background: rgb(240,228,228);
+background: linear-gradient(90deg, rgba(240,228,228,1) 14%, rgba(233,148,151,0.31425070028011204) 100%);
+            color: black;
+            font-family: "Josefin Sans", sans-serif;
+        
+        }
+
+        h1.title{
+            background-color: #E50914;
+            color: black;
+            padding: 10px;
+            font-family: "Bebas Neue", sans-serif;
+        }
+        form{
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 30px;
+            display: flex;
+        }
+        form button:hover {
+            background-color: whitesmoke;
+            border-radius: 20px;
+        }
+
+
+        form input {
+            padding: 5px;
+            border: none;
+            outline: none;
+            flex: 1;
+            border-radius: 10px;
+
+        }
+        form button{
+            padding: 5px 10px;
+            background-color: black;
+            color: #E50914;
+            border: none;
+            cursor: pointer;
+        }
+        div.lista{
+            margin-top: 10px;
+            padding: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            
+            justify-content: center;
+            
+
+        }
+        div.item{
+            text-align: center;
+            padding: 10px;
+            width: 200px;
+            border: 2px solid black;
+            border-radius: 20px;
+            margin: 5px;
+
+        }
+        div.item:hover{
+            background-color: black;
+            cursor: pointer;
+        }
+        div.item img{
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 class="title">Filmes</h1>
+    <form>
+        <input name="pesquisa" placeholder="Digite o nome do filme..."/>
+        <button>Pesquisar</button>
+    </form>
+    <div class="lista">
+        
+    </div>
+    <script>
+        const apiKey = '64ef60f6'
+        const frmPesquisa = document.querySelector("form");
+
+        frmPesquisa.onsubmit = (ev) => {
+            ev.preventDefault();
+            const pesquisa = ev.target.pesquisa.value;
+            if(pesquisa =="")
+            {
+                alert('Preencha o campo!');
+                return;
+            }
+            fetch(`https://www.omdbapi.com/?s=${pesquisa}&apikey=${apiKey}`)
+            .then(result => result.json())
+            .then(json => carregalista(json));
+        }
+        const carregalista = (json) => {
+          const lista = document.querySelector("div.lista");
+          lista.innerHTML = "";
+
+          
+          
+          if (json.Response =='False'){
+            alert('Nenhum filme encontrado!')
+            return
+          }
+
+          json.Search.forEach(element => {
+            
+
+           let item = document.createElement("div");
+            item.classList.add("item")
+            item.innerHTML = `<img src= "${element.Poster}" /><h2>${element.Title}</h2>`
+            lista.appendChild(item);
+            
+          });
+
+        }
+        
+        
+
+    </script>
+
+</body>
+</html>
